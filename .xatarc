@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://Sahibpreet-Singh-s-workspace-gcdipl.eu-central-1.xata.sh/db/snapcast",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}
