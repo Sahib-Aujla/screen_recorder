@@ -43,7 +43,7 @@ export const getVideoUploadUrl = withErrorHandling(async () => {
 
     const uploadUrl = `${VIDEO_STREAM_BASE_URL}/${BUNNY_LIBRARY_ID}/videos/${videoRes.guid}`;
     return {
-        videoId: videoRes.guid,
+        videoId: String(videoRes.guid),
         uploadUrl,
         accessKey: ACCESS_KEYS.streamAccessKey
     }
