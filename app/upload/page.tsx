@@ -3,7 +3,7 @@ import FileInput from "@/components/FileInput";
 import FormField from "@/components/FormField";
 import { MAX_THUMBNAIL_SIZE, MAX_VIDEO_SIZE } from "@/constants";
 import { useFileInput } from "@/lib/hooks/useFieldInput";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 
 const Page = () => {
   const [error, setError] = useState<string | null>(null);
@@ -22,11 +22,35 @@ const Page = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+        if(!video.file || !thumbnail.file) {
+            setError("Please select a video and a thumbnail.");
+            return;
+        }
+        if(!formData.title || !formData.description) {
+            setError("Please fill in all fields.");
+            return;
+        }
+        
+    } catch (err) {
+      console.error(err);
+      setError("An error occurred while uploading the video.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="upload-page wrapper-md">
       <h1>Upload a Video</h1>
       {error && <div className="error-field">{error}</div>}
-      <form className="rounded-20 shadow-10 gap-6 w-full flex flex-col px-5 py-7.5">
+      <form
+        onSubmit={handleSubmit}
+        className="rounded-20 shadow-10 gap-6 w-full flex flex-col px-5 py-7.5"
+      >
         <FormField
           id="title"
           label="Title"
