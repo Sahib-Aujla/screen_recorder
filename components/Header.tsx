@@ -1,9 +1,73 @@
-import React from "react";
+'use client'
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import RecordScreent from "./RecordScreent";
+import { updateURLParams } from "@/lib/utils";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import DropdownList from "./DropdownList";
+import { filterOptions } from "@/constants";
 // import DropdownList from "./DropdownList";
 const Header = ({ subHeader, title, userImg }: SharedHeaderProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("query") || ""
+  );
+  const [selectedFilter, setSelectedFilter] = useState(
+    searchParams.get("filter") || "Most Recent"
+  );
+
+  useEffect(() => {
+    setSearchQuery(searchParams.get("query") || "");
+    setSelectedFilter(searchParams.get("filter") || "Most Recent");
+  }, [searchParams]);
+
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      if (searchQuery !== searchParams.get("query")) {
+        const url = updateURLParams(
+          searchParams,
+          { query: searchQuery || null },
+          pathname
+        );
+        router.push(url);
+      }
+    }, 500);
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery, searchParams, pathname, router]);
+
+  const handleFilterChange = (filter: string) => {
+    setSelectedFilter(filter);
+    const url = updateURLParams(
+      searchParams,
+      { filter: filter || null },
+      pathname
+    );
+    router.push(url);
+  };
+
+  const renderFilterTrigger = () => (
+    <div className="filter-trigger">
+      <figure>
+        <Image
+          src="/assets/icons/hamburger.svg"
+          alt="hamburger"
+          width={14}
+          height={14}
+        />
+        <span>{selectedFilter}</span>
+      </figure>
+      <Image
+        src="/assets/icons/arrow-down.svg"
+        alt="arrow-down"
+        width={20}
+        height={20}
+      />
+    </div>
+  );
   return (
     <header className="header">
       <section className="header-container">
@@ -32,7 +96,7 @@ const Header = ({ subHeader, title, userImg }: SharedHeaderProps) => {
             />
             <span>Upload a Video</span>
           </Link>
-         <RecordScreent />
+          <RecordScreent />
         </aside>
       </section>
       <section className="search-filter">
@@ -48,12 +112,12 @@ const Header = ({ subHeader, title, userImg }: SharedHeaderProps) => {
             height={16}
           />
         </div>
-         {/* <DropdownList
+        <DropdownList
           options={filterOptions}
           selectedOption={selectedFilter}
           onOptionSelect={handleFilterChange}
           triggerElement={renderFilterTrigger()}
-        /> */}
+        />
       </section>
     </header>
   );
