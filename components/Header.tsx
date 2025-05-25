@@ -1,8 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ICONS } from "@/constants";
-import DropdownList from "./DropdownList";
+import RecordScreent from "./RecordScreent";
+// import DropdownList from "./DropdownList";
 const Header = ({ subHeader, title, userImg }: SharedHeaderProps) => {
   return (
     <header className="header">
@@ -32,12 +32,7 @@ const Header = ({ subHeader, title, userImg }: SharedHeaderProps) => {
             />
             <span>Upload a Video</span>
           </Link>
-          <div className="record">
-            <button className="primary-btn">
-              <Image src={ICONS.record} alt="record" width={16} height={16} />
-              <span>Record a video</span>
-            </button>
-          </div>
+         <RecordScreent />
         </aside>
       </section>
       <section className="search-filter">
@@ -53,7 +48,12 @@ const Header = ({ subHeader, title, userImg }: SharedHeaderProps) => {
             height={16}
           />
         </div>
-        <DropdownList />
+         {/* <DropdownList
+          options={filterOptions}
+          selectedOption={selectedFilter}
+          onOptionSelect={handleFilterChange}
+          triggerElement={renderFilterTrigger()}
+        /> */}
       </section>
     </header>
   );
