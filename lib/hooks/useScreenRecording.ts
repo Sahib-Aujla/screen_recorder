@@ -33,6 +33,8 @@ export const useScreenRecording = () => {
         };
     }, [state.recordedVideoUrl]);
 
+    
+
     const handleRecordingStop = () => {
         const { blob, url } = createRecordingBlob(chunksRef.current);
         const duration = calculateRecordingDuration(startTimeRef.current);
